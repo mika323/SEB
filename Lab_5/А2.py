@@ -6,7 +6,7 @@ sentences = re.split(r'(?<=[.?!]) +', text)
 def print_sentences(items):
     for item in items:
         print(item)
-        print()
 
 print_sentences(sentences)
 print(f'Предложений в тексте: {len(sentences)}')
+
