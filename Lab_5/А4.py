@@ -23,6 +23,19 @@ def read_commands(filename):
             commands.append(command)
         return commands
 
+def decode(word):
+    result = ''
+    i = 0
+    while i < len(word):
+        if word[i].isdigit():
+            result += word[i + 1] * int(word[i])
+            i += 1
+        else:
+            result += word[i]
+        i += 1
+    return result
+
+
 
 
 
