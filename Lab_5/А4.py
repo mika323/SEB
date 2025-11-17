@@ -64,6 +64,24 @@ def diff(data, protein1, protein2):
     difference = difference + abs(len(seq1) - len(seq2))
     return str(difference)
 
+def mode(data, protein):
+    for line in data:
+        if line[0] == protein:
+            sequence = line[2]
+            letters = {}
+            for amino_acid in sequence:
+                letters[amino_acid] = letters.get(amino_acid, 0) + 1
+            max_value = max(letters.values())
+            answer_letter = None
+            for key in sorted(letters):
+                if letters[key] == max_value:
+                    max_value = letters[key]
+                    answer_letter = key
+                    break
+            return answer_letter, max_value
+    return 'MISSING'
+
+
 
 
 
