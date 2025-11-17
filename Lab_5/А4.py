@@ -35,6 +35,13 @@ def decode(word):
         i += 1
     return result
 
+def search(data, amino_sequence):
+    for sequence in data:
+        if amino_sequence in sequence[2]:
+            return f'organism\t\t\t\tprotein\n{sequence[1]}\t{sequence[0]}'
+    return 'NOT FOUND'
+
+
 
 
 
