@@ -41,6 +41,29 @@ def search(data, amino_sequence):
             return f'organism\t\t\t\tprotein\n{sequence[1]}\t{sequence[0]}'
     return 'NOT FOUND'
 
+def diff(data, protein1, protein2):
+    seq1 = seq2 = None
+    for protein in data:
+        if protein[0] == protein1:
+            seq1 = protein[2]
+        elif protein[0] == protein2:
+            seq2 = protein[2]
+
+    if seq1 is None and seq2 is None:
+        return f"MISSING: {protein1}, {protein2}"
+    elif seq1 is None:
+        return f"MISSING: {protein1}"
+    elif seq2 is None:
+        return f"MISSING: {protein2}"
+
+    min_length = min(len(seq1), len(seq2))
+    difference = 0
+    for i in range(min_length):
+        if seq1[i] != seq2[i]:
+            difference += 1
+    difference = difference + abs(len(seq1) - len(seq2))
+    return str(difference)
+
 
 
 
