@@ -82,6 +82,15 @@ def mode(data, protein):
             return answer_letter, max_value
     return 'MISSING'
 
+data1 = genetic_data('sequences.0.txt')
+file = open('genedata.txt', 'w', encoding = 'utf-8')
+file.write('Milana Shastitko\n')
+file.write('Genetic Searching\n')
+file.write('-' * 74 + '\n')
+commands_ = read_commands('commands.0.txt')
+
+
+
 
 
 
