@@ -124,4 +124,11 @@ def analyze_workout_types(workouts):
         print(f' Средняя длительность: {stats['duration_sum'] / stats['count']:.0f} мин')
         print(f' Средняя длительность: {stats['calories_sum'] / stats['count']:.0f} ккал')
 
+def find_user_workouts(users, user_name):
+    for user in users:
+        if user['name'] == user_name:
+            return user['workouts']
+    return []
+
+
 
