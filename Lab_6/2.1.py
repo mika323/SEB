@@ -57,5 +57,44 @@ def get_stats(users, workouts):
 
 all_users = load_users_data()
 all_workouts = load_workouts_data()
-get_stats(all_users, all_workouts)
+
+def analyze_user_activity(users):
+    workouts_by_user_id = {}
+    for workout in all_workouts:
+        user_id = workout['user_id']
+        if user_id not in workouts_by_user_id:
+            workouts_by_user_id[user_id] = []
+        workouts_by_user_id[user_id].append(workout)
+
+    for user in users:
+        user_id = user['user_id']
+        user_workouts = workouts_by_user_id.get(user_id, [])
+        user['workouts'] = user_workouts
+    user_summary_stats = []
+
+    for user in users:
+        user_workouts = user['workouts']
+        num_workouts = len(user_workouts)
+        total_calories = sum(w['calories'] for w in user_workouts)
+        total_duration_hours = sum(w['duration'] for w in user_workouts) / 60
+        user_summary_stats.append({
+            'user_id': user['user_id'],
+            'name': user['name'],
+            'fitness_level': user['fitness_level'],
+            'num_workouts': num_workouts,
+            'total_calories': total_calories,
+            'total_duration_hours': total_duration_hours
+        })
+
+    sorted_users = sorted(
+        user_summary_stats,
+        key=lambda x: (x['num_workouts'], x['total_calories']),
+        reverse=True
+    )
+    print('\nТОП-3 АКТИВНЫХ ПОЛЬЗОВАТЕЛЕЙ:')
+    for i, u_stats in enumerate(sorted_users[:3]):
+        print(f"{i + 1}. {u_stats['name']} ({u_stats['fitness_level']}):")
+        print(f"   Тренировок: {u_stats['num_workouts']}")
+        print(f"   Калорий: {u_stats['total_calories']}")
+        print(f"   Время: {u_stats['total_duration_hours']:.1f} часов\n")
 
