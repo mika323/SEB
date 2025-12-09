@@ -169,6 +169,43 @@ def analyze_user(user):
     else:
         print(f'У пользователя {user} нет тренировок.')
 
+def circle(workouts):
+    count_run = 0
+    count_strength = 0
+    count_bike = 0
+    count_swim = 0
+    count_walk = 0
+
+    for workout in workouts:
+        if workout['type'] == 'бег':
+            count_run += 1
+        elif workout['type'] == 'силовая тренировка':
+            count_strength += 1
+        elif workout['type'] == 'велосипед':
+            count_bike += 1
+        elif workout['type'] == 'плавание':
+            count_swim += 1
+        else:
+            count_walk += 1
+
+    y = np.array(
+        [(count_run / len(workouts) * 100),
+         (count_strength / len(workouts) * 100),
+         (count_bike / len(workouts) * 100),
+         (count_swim / len(workouts) * 100),
+         (count_walk / len(workouts) * 100)]
+    )
+    my_labels = ["бег", "силовая тренировка", "велосипед", "плавание", "ходьба"]
+    plt.pie(y,
+            labels=my_labels,
+            startangle=90,
+            autopct='%1.1f%%',
+            textprops={'fontsize': 6})
+    plt.title('Распределение типов тренировок', fontweight='bold')
+
+    plt.show()
+
+
 
 
 
