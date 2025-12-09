@@ -42,15 +42,8 @@ def  load_workouts_data():
         return []
 
 def get_stats(users, workouts):
-    count_workouts = 0
-    count_users = 0
-    total_calories = 0
-    total_time = 0
-    total_distance = 0
-    for workout in workouts:
-        count_workouts += 1
-    for user in users:
-        count_users += 1
+    count_users = len(users)
+    count_workouts = len(workouts)
     total_calories = sum(workout['calories'] for workout in workouts)
     total_time = sum(workout['duration'] for workout in workouts) / 60
     total_distance = sum(workout['distance'] for workout in workouts)
@@ -61,3 +54,4 @@ def get_stats(users, workouts):
     print(f'Сожжено калорий: {total_calories}')
     print(f'Общее время: {total_time:.1f} часов')
     print(f'Пройдено дистанции: {total_distance} км')
+
