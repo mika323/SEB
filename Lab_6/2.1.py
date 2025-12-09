@@ -55,3 +55,7 @@ def get_stats(users, workouts):
     print(f'Общее время: {total_time:.1f} часов')
     print(f'Пройдено дистанции: {total_distance} км')
 
+all_users = load_users_data()
+all_workouts = load_workouts_data()
+get_stats(all_users, all_workouts)
+
