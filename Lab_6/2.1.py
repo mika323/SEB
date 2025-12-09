@@ -341,6 +341,31 @@ def pillar_users_calories(users):
     plt.tight_layout()
     plt.show()
 
+def main():
+    users = load_users_data()
+    workouts = load_workouts_data()
+
+    get_stats(users, workouts)
+
+    analyze_user_activity(users)
+
+    analyze_workout_types(workouts)
+
+    user_workouts = find_user_workouts(users, 'Борис')
+    print()
+    print(user_workouts)
+
+    analyze_user('Борис', user_workouts)
+
+    print(circle(workouts))
+    print(users_activity(users))
+    print(effectiveness_of_training(workouts))
+    print(pillar_users_calories(users))
+
+if __name__ == "__main__":
+    main()
+
+
 
 
 
