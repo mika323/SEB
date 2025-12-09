@@ -98,3 +98,30 @@ def analyze_user_activity(users):
         print(f"   Калорий: {u_stats['total_calories']}")
         print(f"   Время: {u_stats['total_duration_hours']:.1f} часов\n")
 
+def analyze_workout_types(workouts):
+    type_stats = {}
+    total_workouts = len(workouts)
+    for workout in workouts:
+        workout_type = workout['type']
+        duration = workout.get('duration', 0)
+        calories = workout.get('calories', 0)
+
+        if workout_type in type_stats:
+            type_stats[workout_type]['count'] += 1
+            type_stats[workout_type]['duration_sum'] += duration
+            type_stats[workout_type]['calories_sum'] += calories
+        else:
+            type_stats[workout_type] = {
+                'count': 1,
+                'duration_sum': duration,
+                'calories_sum': calories
+            }
+
+    print('РАСПРЕДЕЛЕНИЕ ПО ТИПАМ ТРЕНИРОВОК:')
+    for key, stats in type_stats.items():
+        key = key.capitalize()
+        print(f'{key}: {stats['count']} тренировок({stats['count']/total_workouts * 100:.1f}%)')
+        print(f' Средняя длительность: {stats['duration_sum'] / stats['count']:.0f} мин')
+        print(f' Средняя длительность: {stats['calories_sum'] / stats['count']:.0f} ккал')
+
+
