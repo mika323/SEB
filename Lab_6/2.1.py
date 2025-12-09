@@ -284,6 +284,62 @@ def effectiveness_of_training(workouts):
     plt.show()
 
 
+def pillar_users_calories(users):
+    stat = {}
+    for user in users:
+        if user['name'] not in stat:
+            user_calories = 0
+            for workout in user['workouts']:
+                user_calories += workout['calories']
+            stat[user['name']] = user['fitness_level'], user_calories
+        else:
+            existing_fitness_level, existing_calories = stat[user['name']]
+            additional_calories = sum(workout['calories'] for workout in user['workouts'])
+            stat[user['name']] = (existing_fitness_level, existing_calories + additional_calories)
+
+    print(stat)
+
+    sorted_stat = sorted(stat.items(), key=lambda x: x[1][1], reverse=True)
+
+    users = [u[0] for u in sorted_stat]
+    levels = [u[1][0] for u in sorted_stat]
+    u_calories = [u[1][1] for u in sorted_stat]
+
+    level_colors = {
+        'продвинутый': 'red',
+        'средний': 'orange',
+        'начальный': 'green'
+    }
+
+    colors_for_bars = [level_colors[level] for level in levels]
+
+    fig, ax = plt.subplots(figsize=(12, 7))
+    bars = ax.bar(users, u_calories, color=colors_for_bars)
+    ax.set_title('Сравнение пользователей по общим затраченным калориям', fontweight = 'bold', fontsize=16, pad=10)
+    ax.set_xlabel('Пользователи', fontsize=12)
+    ax.set_ylabel('Общие калории', fontsize=12)
+
+    plt.xticks(rotation=45, ha='right')
+
+    fig.patch.set_edgecolor('lightblue')
+    fig.patch.set_linewidth(2)
+
+    for bar in bars:
+        height = bar.get_height()
+        ax.text(bar.get_x() + bar.get_width() / 2,
+                height + 100,
+                f'{int(height)}',
+                ha = 'center', va = 'bottom'
+                )
+
+    ax.set_ylim(0, max(u_calories) + 300)
+
+    legend_handles = [plt.Rectangle((0, 0), 1, 1, color=level_colors[level]) for level in level_colors]
+    legend_labels = list(level_colors.keys())
+    ax.legend(legend_handles, legend_labels, loc='upper right', fontsize=10)
+
+    plt.tight_layout()
+    plt.show()
 
 
 
