@@ -245,6 +245,46 @@ def users_activity(users):
     plt.show()
 
 
+def effectiveness_of_training(workouts):
+    workout_inf = {}
+    for workout in workouts:
+        if workout['type'] not in workout_inf:
+            workout_inf[workout['type']] = [workout['duration'], workout['calories']]
+        else:
+            workout_inf[workout['type']][0] += workout['duration']
+            workout_inf[workout['type']][1] += workout['calories']
+ 
+    sorted_activity = sorted(workout_inf.items(), key=lambda x: x[1][1] / x[1][0], reverse=True)
+
+    workout_types = [w[0] for w in sorted_activity]
+    calories_per_minute = [w[1][1] / w[1][0] for w in sorted_activity]
+
+    fig, ax = plt.subplots(figsize=(8 , 5))
+    bars = ax.bar(workout_types, calories_per_minute, color = 'purple' )
+    ax.set_title('Эффективность тренировок (калории/минуту)', fontweight = 'bold', fontsize=10)
+    ax.set_xlabel('Тип тренировки', fontsize=10)
+    ax.set_ylabel('Калории в минуту', fontsize=10)
+
+    for bar in bars:
+        height = bar.get_height()
+        ax.text(bar.get_x() + bar.get_width() / 2,
+                height + 0.05,
+                f'{height:.2f}',
+                ha = 'center', va = 'bottom',
+                fontsize = 10)
+
+    ax.set_ylim(0, max(calories_per_minute) + 0.7)
+
+    plt.xticks(rotation = 45, ha = 'right')
+
+    fig.patch.set_edgecolor('lightblue')
+    fig.patch.set_linewidth(2)
+
+    plt.tight_layout()
+    plt.show()
+
+
+
 
 
 
