@@ -206,6 +206,46 @@ def circle(workouts):
     plt.show()
 
 
+def users_activity(users):
+    users_inf = {}
+
+    for user in users:
+        if user['name'] not in users_inf:
+            users_inf[user['name']] = len(user['workouts'])
+        else:
+            users_inf[user['name']] += len(user['workouts'])
+
+    sorted_activity = sorted(users_inf.items(), key=lambda x: x[1], reverse=True)
+    names = [u[0] for u in sorted_activity]
+    activity = [u[1] for u in sorted_activity]
+
+    fig, ax = plt.subplots(figsize=(10, 6))
+    bars = ax.bar(names, activity, color='lightblue')
+    ax.set_title('Активность пользователей (количество тренировок)', fontweight='bold', fontsize=10, pad=10)
+    ax.set_xlabel('Пользователи', fontsize=10)
+    ax.set_ylabel('Количество тренировок', fontsize=10)
+
+    for bar in bars:
+        height = bar.get_height()
+        ax.text(bar.get_x() + bar.get_width() / 2,
+                height + 0.3,
+                f'{int(height)}',
+                ha='center', va='bottom',
+                fontsize=10)
+
+    plt.xticks(rotation=45, ha='right',
+               fontsize=10)
+
+    ax.set_ylim(0, max(activity) + 1.5)
+
+    fig.patch.set_edgecolor('lightblue')
+    fig.patch.set_linewidth(2)
+
+    plt.tight_layout()
+    plt.show()
+
+
+
 
 
 
