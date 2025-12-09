@@ -1,4 +1,7 @@
 import xml.etree.ElementTree as ET
+import matplotlib.pyplot as plt
+import numpy as np
+
 def load_users_data():
     try:
         users_tree = ET.parse('users.xml')
@@ -16,7 +19,6 @@ def load_users_data():
         return users
     except FileNotFoundError:
         print("Файл не найден")
-
         return []
 
 def  load_workouts_data():
@@ -32,7 +34,7 @@ def  load_workouts_data():
                 'duration': int(workout_elem.find('duration').text),
                 'distance': float(workout_elem.find('distance').text),
                 'calories': int(workout_elem.find('calories').text),
-                'avg_heart': int(workout_elem.find('avg_heart').text),
+                'avg_heart_rate': int(workout_elem.find('avg_heart_rate').text),
                 'intensity': workout_elem.find('intensity').text
             }
             workouts.append(workout)
@@ -55,10 +57,9 @@ def get_stats(users, workouts):
     print(f'Общее время: {total_time:.1f} часов')
     print(f'Пройдено дистанции: {total_distance} км')
 
-all_users = load_users_data()
-all_workouts = load_workouts_data()
 
 def analyze_user_activity(users):
+    all_workouts = load_workouts_data()
     workouts_by_user_id = {}
     for workout in all_workouts:
         user_id = workout['user_id']
@@ -124,14 +125,16 @@ def analyze_workout_types(workouts):
         print(f' Средняя длительность: {stats['duration_sum'] / stats['count']:.0f} мин')
         print(f' Средняя длительность: {stats['calories_sum'] / stats['count']:.0f} ккал')
 
+
 def find_user_workouts(users, user_name):
     for user in users:
         if user['name'] == user_name:
             return user['workouts']
     return []
 
-def analyze_user(user):
-    user_workouts = find_user_workouts(all_users, user)
+
+def analyze_user(user, user_workouts):
+    all_users = load_users_data()
     count_workouts = len(user_workouts)
 
     print(f'\nДЕТАЛЬНЫЙ АНАЛИЗ ДЛЯ ПОЛЬЗОВАТЕЛЯ: {user}')
@@ -205,7 +208,6 @@ def circle(workouts):
 
     plt.show()
 
-
 def users_activity(users):
     users_inf = {}
 
@@ -244,7 +246,6 @@ def users_activity(users):
     plt.tight_layout()
     plt.show()
 
-
 def effectiveness_of_training(workouts):
     workout_inf = {}
     for workout in workouts:
@@ -253,7 +254,7 @@ def effectiveness_of_training(workouts):
         else:
             workout_inf[workout['type']][0] += workout['duration']
             workout_inf[workout['type']][1] += workout['calories']
- 
+
     sorted_activity = sorted(workout_inf.items(), key=lambda x: x[1][1] / x[1][0], reverse=True)
 
     workout_types = [w[0] for w in sorted_activity]
@@ -296,6 +297,7 @@ def pillar_users_calories(users):
             existing_fitness_level, existing_calories = stat[user['name']]
             additional_calories = sum(workout['calories'] for workout in user['workouts'])
             stat[user['name']] = (existing_fitness_level, existing_calories + additional_calories)
+
 
     sorted_stat = sorted(stat.items(), key=lambda x: x[1][1], reverse=True)
 
