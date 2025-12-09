@@ -297,8 +297,6 @@ def pillar_users_calories(users):
             additional_calories = sum(workout['calories'] for workout in user['workouts'])
             stat[user['name']] = (existing_fitness_level, existing_calories + additional_calories)
 
-    print(stat)
-
     sorted_stat = sorted(stat.items(), key=lambda x: x[1][1], reverse=True)
 
     users = [u[0] for u in sorted_stat]
@@ -340,6 +338,7 @@ def pillar_users_calories(users):
 
     plt.tight_layout()
     plt.show()
+
 
 
 
