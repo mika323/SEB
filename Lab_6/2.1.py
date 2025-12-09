@@ -130,5 +130,45 @@ def find_user_workouts(users, user_name):
             return user['workouts']
     return []
 
+def analyze_user(user):
+    user_workouts = find_user_workouts(all_users, user)
+    count_workouts = len(user_workouts)
+
+    print(f'\nДЕТАЛЬНЫЙ АНАЛИЗ ДЛЯ ПОЛЬЗОВАТЕЛЯ: {user}')
+    print(f'===========================================')
+
+    if count_workouts > 0:
+        total_calories = sum(workout['calories'] for workout in user_workouts)
+        total_time = sum(workout['duration'] for workout in user_workouts) / 60
+        total_distance = sum(workout['distance'] for workout in user_workouts)
+        avg_calories = total_calories / count_workouts
+
+        types = {}
+        for workout in user_workouts:
+            tip = workout['type']
+            types[tip] = types.get(tip, 0) + 1
+        favorite_workout = max(types, key=types.get)
+
+        user_found = False
+        for u in all_users:
+            if user == u['name']:
+                print(f'Возраст: {u["age"]} лет, Вес: {u["weight"]} кг')
+                print(f'Уровень: {u["fitness_level"]}')
+                user_found = True
+                break
+
+        if user_found:
+            print(f'Тренировок: {count_workouts}')
+            print(f'Сожжено калорий: {total_calories}')
+            print(f'Общее время: {total_time:.1f} часов')
+            print(f'Пройдено дистанции: {total_distance:.1f} км')
+            print(f'Средние калории за тренировку: {avg_calories:.0f}')
+            print(f'Любимый тип тренировки: {favorite_workout}')
+        else:
+            print('Пользователь не найден.')
+    else:
+        print(f'У пользователя {user} нет тренировок.')
+
+
 
 
